@@ -1,0 +1,21 @@
+diff --git a/libsepol/src/Makefile b/libsepol/src/Makefile
+index 13410c67..e85a66e3 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -15,7 +15,6 @@ CIL_GENERATED = $(CILDIR)/src/cil_lexer.c
+ LIBA=libsepol.a
+ TARGET=libsepol.so
+ LIBPC=libsepol.pc
+-LIBMAP=libsepol.map
+ LIBSO=$(TARGET).$(LIBVERSION)
+ OBJS= $(patsubst %.c,%.o,$(sort $(wildcard *.c)))
+ LOBJS= $(patsubst %.c,%.lo,$(sort $(wildcard *.c)))
+@@ -35,7 +34,7 @@ ifeq (yes,$(shell printf '${H}define _GNU_SOURCE\n${H}include <stdlib.h>\nint ma
+ override CFLAGS += -DHAVE_REALLOCARRAY
+ endif
+
+-LD_SONAME_FLAGS=-soname,$(LIBSO),--version-script=$(LIBMAP),-z,defs
++LD_SONAME_FLAGS=-soname,$(LIBSO),-z,defs
+
+ LN=ln
+ OS := $(shell uname)
