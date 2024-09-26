@@ -1,12 +1,27 @@
 {
   "nodes": {
+    "fun": {
+      "locked": {
+        "lastModified": 1727144869,
+        "narHash": "sha256-dV3lBzWa+etuG5ElYQh3zgZYzoWQYza/rferA5O5J8U=",
+        "owner": "Ninlives",
+        "repo": "fn",
+        "rev": "7958580f631d2f9c64633764ae0f1c2e5b88f3fd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Ninlives",
+        "repo": "fn",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1726447378,
-        "narHash": "sha256-2yV8nmYE1p9lfmLHhOCbYwQC/W8WYfGQABoGzJOb1JQ=",
+        "lastModified": 1726969270,
+        "narHash": "sha256-8fnFlXBgM/uSvBlLWjZ0Z0sOdRBesyNdH0+esxqizGc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "086b448a5d54fd117f4dc2dee55c9f0ff461bdc1",
+        "rev": "23cbb250f3bf4f516a2d0bf03c51a30900848075",
         "type": "github"
       },
       "original": {
@@ -18,6 +33,7 @@
     },
     "root": {
       "inputs": {
+        "fun": "fun",
         "nixpkgs": "nixpkgs"
       }
     }

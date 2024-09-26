@@ -1,0 +1,13 @@
+diff --git a/build_utils.sh b/build_utils.sh
+index 23076151..a06888d9 100644
+--- a/build_utils.sh
++++ b/build_utils.sh
+@@ -705,7 +705,7 @@ function build_gki_artifacts_info() {
+ # kernel images are optional, e.g., ${DIST_DIR}/Image.gz.
+ function build_gki_boot_images() {
+   local uncompressed_kernel_path=$1
+-  local spl_month=$(date +'%m')
++  local spl_month=$(date +'%-m')
+   if [ $((${spl_month} % 3)) -gt 0 ]; then
+     # Round up to the closest quarterly month
+     spl_month=$((${spl_month} + 3 - (${spl_month} % 3)))

@@ -1,10 +1,13 @@
 {
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+  inputs.fun.url = "github:Ninlives/fn";
 
   outputs = {
     self,
     nixpkgs,
+    fun,
   }: let
+    fn = fun.c {inherit (nixpkgs) lib;};
     sys = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${sys};
     linkPkgs = pkgs.pkgsCross.aarch64-multiplatform-musl;
@@ -12,6 +15,8 @@
     refPkgs = self.packages.${sys};
   in {
     packages.${sys} = {
+      pivot = pkgs.callPackage ./crux/pivot {inherit fn;};
+
       cortex = linkPkgs.callPackage ./link/cortex {};
       weave = linkPkgs.callPackage ./link/weave {};
       dial = linkPkgs.callPackage ./link/dial.nix {inherit (refPkgs) cortex weave;};

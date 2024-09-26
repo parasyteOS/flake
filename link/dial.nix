@@ -1,4 +1,8 @@
-{ writeShellScriptBin, cortex, weave }:
+{
+  writeShellScriptBin,
+  cortex,
+  weave,
+}:
 writeShellScriptBin "dial" ''
   PRIV_KEY=$1
   ${cortex}/bin/cortex "$PRIV_KEY" dump |\
