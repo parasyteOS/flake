@@ -8,7 +8,7 @@
   pact = fetchFromGitHub {
     owner = "parasyteOS";
     repo = "pact";
-    rev = "c8e83620b49670ba5f2b48d77db47ca992a28216";
-    hash = "sha256-lOtSu/AirxMWG15T4h59bQZrGCpmZALyQZDMPayTKXo=";
+    rev = "0ae8d2b89a966cb52ba9421d0789df6a27dc44af";
+    hash = "";
   };
 }

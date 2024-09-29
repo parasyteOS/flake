@@ -2,7 +2,7 @@
   fn,
   lib,
   pkgs,
-  callPackage,
+  sources,
   runCommandNoCC,
   which,
   coreutils,
@@ -13,7 +13,6 @@
   gnutar,
 }: let
   mkCmdsFromAttrs = attrs: func: with lib; concatStringsSep "\n" (mapAttrsToList func attrs);
-  sources = callPackage ./sources.nix {};
   buildImage = {
     manifests,
     parasytePatches,
@@ -36,7 +35,7 @@
       extraPatches ? [],
       enableTsu ? false,
       tsuKey ? null,
-      lto ? "full"
+      lto ? "full",
     } @ args: let
       patches = (lib.optionals applyParasytePatches parasytePatches) ++ (lib.optionals enableTsu tsuPatches) ++ extraPatches;
     in
