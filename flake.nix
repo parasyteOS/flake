@@ -35,11 +35,12 @@
   in {
     packages.${sys} = {
       pivot = pkgs.callPackage ./crux/pivot {inherit fn sources;};
-      grid = pkgs.callPackage ./crux/grid {inherit (gradle2nix.builders.${sys}) buildGradlePackage;};
+      deck = pkgs.callPackage ./crux/deck {inherit (gradle2nix.builders.${sys}) buildGradlePackage;};
 
       cortex = linkPkgs.callPackage ./link/cortex {};
       weave = linkPkgs.callPackage ./link/weave {};
       dial = linkPkgs.callPackage ./link/dial.nix {inherit (refPkgs) cortex weave;};
+      grid = linkPkgs.callPackage ./shard/grid/default.nix {};
 
       inherit (vatPkgs.callPackage ./vat/android-headers {}) android-headers-30;
       libhybris = vatPkgs.callPackage ./vat/libhybris.nix {android-headers = refPkgs.android-headers-30;};

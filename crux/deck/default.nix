@@ -29,11 +29,11 @@
   };
 in
   buildGradlePackage {
-    pname = "grid";
+    pname = "deck";
     version = "0.118.1";
     src = fetchFromGitHub {
       owner = "parasyteOS";
-      repo = "grid";
+      repo = "deck";
       rev = "43317b78c920a48254f8846f5e14b5f873faa271";
       hash = "sha256-Es1eSADqrUR940V9g1T0AxohLGluBvpCLBak6Jotj5A=";
     };
