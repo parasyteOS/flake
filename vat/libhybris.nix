@@ -20,8 +20,8 @@ stdenv.mkDerivation {
   src = fetchFromGitHub {
     owner = "parasyteOS";
     repo = "libhybris";
-    rev = "a70e5cbb0b5384a1b4687f4fc9e49679ebf5ee5f";
-    hash = "sha256-USnNEQu9H+21NRvf4+kYR8OCGU18FhENXEWQmX7zToA=";
+    rev = "667243f6151b328685b264ec7d6395a602aa10c3";
+    hash = "";
   };
   sourceRoot = "source/hybris";
 

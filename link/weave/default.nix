@@ -22,8 +22,8 @@ in
     src = fetchFromGitHub {
       owner = "parasyteOS";
       repo = "weave";
-      rev = "fd6fce1053d6387b5b1afa45ed5bb8bc77ec863b";
-      hash = "sha256-HpZeNed+QhfLWuTHi2pM3sfXS1i55MdPizjKeg5Jrn4=";
+      rev = "cdc49e96a245229ff4e04c645bb564cc50b95fc7";
+      hash = "sha256-uLbrVOEFjrZ2Yta+ZjVGGCcUxE3tXcetIfTb1xBXwt4=";
     };
 
     nativeBuildInputs = [pkg-config];
