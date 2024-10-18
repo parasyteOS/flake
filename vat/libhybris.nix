@@ -4,9 +4,15 @@
   autoreconfHook,
   pkg-config,
   wayland,
+  wayland-scanner,
   xorg,
   android-headers,
 }:
+let
+  inherit (stdenv) targetPlatform buildPlatform;
+  libPrefix = if targetPlatform == buildPlatform then ""
+    else targetPlatform.config;
+in
 stdenv.mkDerivation {
   pname = "libhybris";
   version = "0.1.0";
@@ -19,7 +25,7 @@ stdenv.mkDerivation {
   };
   sourceRoot = "source/hybris";
 
-  nativeBuildInputs = [autoreconfHook pkg-config];
+  nativeBuildInputs = [autoreconfHook pkg-config wayland-scanner];
   buildInputs = [wayland xorg.libX11 xorg.libXext xorg.libxcb];
 
   configureFlags = [
@@ -31,6 +37,6 @@ stdenv.mkDerivation {
 
   NIX_LDFLAGS = [
     # For libsupc++.a
-    "-L${stdenv.cc.cc}/lib/"
+    "-L${stdenv.cc.cc.out}/${libPrefix}/lib/"
   ];
 }

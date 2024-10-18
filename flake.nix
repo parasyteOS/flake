@@ -28,7 +28,7 @@
     linkPkgs = pkgs.pkgsCross.aarch64-multiplatform-musl.extend (final: prev: {
       musl = prev.musl.overrideAttrs (p: {patches = p.patches or [] ++ ["${sources.pact}/musl/adapt-seccomp.patch"];});
     });
-    vatPkgs = pkgs.pkgsCross.aarch64-linux;
+    vatPkgs = pkgs.pkgsCross.aarch64-multiplatform;
     refPkgs = self.packages.${sys};
 
     sources = pkgs.callPackage ./sources.nix {};

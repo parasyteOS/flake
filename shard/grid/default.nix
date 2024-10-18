@@ -1,4 +1,4 @@
-{ bash, coreutils, neovim, writeShellScriptBin, buildEnv }:
+{ bash, coreutils, vim, writeShellScriptBin, buildEnv }:
 let
   login = writeShellScriptBin "login" ''
     env   
@@ -7,12 +7,15 @@ let
 in
 buildEnv {
   name = "usr";
-  paths = [ coreutils neovim login ];
+  paths = [ coreutils vim login ];
   postBuild = ''
-    cat > bootstrap <<EOF
+    cat > ${placeholder "out"}/bootstrap <<EOF
     #!${bash}/bin/bash
-    ln -sf ${placeholder "out"} /data/data/com.termux/files/usr
+    ${coreutils}/bin/chmod -R u-w ${builtins.storeDir}
+    ${coreutils}/bin/chmod u+w ${builtins.storeDir}
+    ${coreutils}/bin/rm -rf /data/data/com.termux/files/usr
+    ${coreutils}/bin/ln -sf ${placeholder "out"} /data/data/com.termux/files/usr
     EOF
-    chmod +x bootstrap
+    chmod +x ${placeholder "out"}/bootstrap
   '';
 }
