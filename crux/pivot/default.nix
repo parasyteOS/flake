@@ -33,6 +33,7 @@
     mkImage = {
       applyParasytePatches ? true,
       extraPatches ? [],
+      localVersion ? null,
       enableTsu ? false,
       tsuKey ? null,
       lto ? "full",
@@ -43,6 +44,7 @@
         nativeBuildInputs = [which coreutils bintools git perl rsync gnutar];
         passthru = {
           vanilla = mkImage (args // {applyParasytePatches = false;});
+          withLocalVersion = localVersion: mkImage (args // { inherit localVersion; });
           withPatches = patches: mkImage (args // {extraPatches = patches;});
           withThinLTO = mkImage (args // {lto = "thin";});
           withTsu = {key}:
@@ -76,7 +78,9 @@
           patches}
         NIX_DYNAMIC_LINKER="$(cat $NIX_BINTOOLS/nix-support/dynamic-linker|tr -d '[:space:]')"
         PRE_DEFCONFIG_CMDS='export HOSTLDFLAGS="$HOSTLDFLAGS -Wl,${hostLibPaths} -Wl,-dynamic-linker='"$NIX_DYNAMIC_LINKER"'"' \
-        LTO=${lto} DIST_DIR=$out BUILD_CONFIG=common/build.config.gki.aarch64 build/build.sh ${lib.optionalString enableTsu "TSU_PUB_KEY=${tsuKey}"}
+        LTO=${lto} DIST_DIR=$out BUILD_CONFIG=common/build.config.gki.aarch64 build/build.sh \
+          ${lib.optionalString (localVersion != null) "LOCALVERSION=${localVersion}"} \
+          ${lib.optionalString enableTsu "TSU_PUB_KEY=${tsuKey}"}
       '';
   in
     mkImage {};

@@ -2,9 +2,9 @@
   sources = {
     "build/kernel" = {
       repo = "kernel/build";
-      rev = "32d2db6179111b26cf1f523de91e1fe67fec4c29";
-      hash = "sha256-WeJKaqNW/iRZkrWGuu6IeEHf3VfiqwlobQeMuoutILg=";
-      patches = [./fix-build.patch];
+      rev = "8e2cbb1c0cf3d68f851387d36e9f7a41f7e69913";
+      hash = "sha256-LkeqflpKThETfU2CjVAVibZFqxwLsIJYJYPW1tyxF9U=";
+      # patches = [./fix-build.patch];
       fixup = true;
       links = {
         "tools/bazel" = "kleaf/bazel.sh";
@@ -23,8 +23,8 @@
     };
     "common" = {
       repo = "kernel/common";
-      rev = "3ca6a2912c7e6f416930ce3dbb26381cb04ec8d5";
-      hash = "sha256-8hBCkwknNW4lZdOAU7E4NHtuJ7CSf7sMpV3ZgBhR2vo=";
+      rev = "e488687c12ef77da40725f91e84a7a629815ad26";
+      hash = "sha256-TqGTJyaIsbptWj6H5TCx1OxQtuRJVlMnlYiuDVy0Gwc=";
       fixup = true;
       links = {
         ".source_date_epoch_dir" = ".";
@@ -42,8 +42,8 @@
     };
     "common-modules/virtual-device" = {
       repo = "kernel/common-modules/virtual-device";
-      rev = "deede4fddac274575cb0e26498fc0f4a718229fb";
-      hash = "sha256-puK1adjMIEztxJFPdCsVLKwUstXW+Dcb/YcjGobLo50=";
+      rev = "cb03117b76f832cf7aef613ee38b6b945456b641";
+      hash = "sha256-K3WowHyMBlMVyvt4ZUIQqn5V7Dag1bZcMMfkFWV2PVc=";
     };
     "tools/mkbootimg" = {
       repo = "platform/system/tools/mkbootimg";
