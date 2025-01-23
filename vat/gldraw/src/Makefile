@@ -1,7 +1,7 @@
 .PHONY: all
 
-CFLAGS = $(shell $(PKG_CONFIG) --cflags egl glesv2)
-LDFLAGS = $(shell $(PKG_CONFIG) --libs egl glesv2)
+CFLAGS = $(shell $(PKG_CONFIG) --cflags egl glesv2 drm) -I$(EVDI)/include
+LDFLAGS = $(shell $(PKG_CONFIG) --libs egl glesv2 drm) -L$(EVDI)/lib -levdi
 
 SRCS = $(shell find . -name '*.c')
 

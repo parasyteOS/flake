@@ -11,8 +11,9 @@
 
 #include <evdi_lib.h>
 
-#include "comm.h"
 #include "ashmem.h"
+#include "comm.h"
+#include "display.h"
 
 #define CANVAS_SOCKET_PATH "/run/outerspace/canvas.socket"
 #define EVENTS_SOCKET_PATH "/run/outerspace/events.socket"
@@ -24,15 +25,6 @@
 // Response to client
 #define SUCCESS_RESP 0
 #define FAILED_RESP (-1)
-
-static int ashmem_get_size_region(int fd)
-{
-  	int rc;
-	do {
-		rc = ioctl(fd, ASHMEM_GET_SIZE, NULL);
-	} while (rc == -1 && errno == EINTR);
-	return rc;
-}
 
 int renderThread(int canvas_server, int events_server, unsigned char* edid, size_t edid_size)
 {
