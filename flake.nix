@@ -10,7 +10,6 @@
   outputs = {
     self,
     nixpkgs,
-    nixpkgs-unstable,
     gradle2nix,
     fun,
   }: let
@@ -49,7 +48,8 @@
       dial = linkPkgs.callPackage ./link/dial.nix {inherit (refPkgs) cortex weave;};
       surge = linkPkgs.callPackage ./link/surge.nix {inherit (refPkgs) cortex sheath;};
       grid = linkPkgs.callPackage ./shard/grid/default.nix {};
-
+    };
+    packages.aarch64-linux = {
       dive = vatPkgs.callPackage ./vat/dive {};
       phantom = vatPkgs.callPackage ./vat/phantom.nix {};
     };
