@@ -1,6 +1,5 @@
 {
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-  inputs.nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable-small";
   inputs.gradle2nix = {
     url = "github:tadfisher/gradle2nix/v2";
     inputs.nixpkgs.follows = "nixpkgs";
