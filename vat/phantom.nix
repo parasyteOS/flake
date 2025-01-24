@@ -34,7 +34,7 @@ in
     ${coreutils}/bin/mkdir -m 0755 /run/pivot
 
     ${coreutils}/bin/mkdir -m 0755 /jar
-    ${coreutils}/bin/mkdir -m 0755 /jar/{hat,nix,tmp,mnt}
+    ${coreutils}/bin/mkdir -m 0755 /jar/{hat,nix,home,mnt}
     ${util-linux}/bin/mount --rbind /nix /jar/nix
     ${util-linux}/bin/mount --rbind /hat /jar/hat
     ${util-linux}/bin/mount --rbind /mnt /jar/mnt
