@@ -1,0 +1,196 @@
+diff --git a/src/egl/drivers/dri2/platform_android.c b/src/egl/drivers/dri2/platform_android.c
+index aa1fb1017c7..eca5f3bdc41 100644
+--- a/src/egl/drivers/dri2/platform_android.c
++++ b/src/egl/drivers/dri2/platform_android.c
+@@ -1092,6 +1092,7 @@ droid_probe_device(_EGLDisplay *disp, bool swrast)
+    if (!droid_load_driver(disp, swrast))
+       return EGL_FALSE;
+ 
++   _eglLog(_EGL_DEBUG, "Calling dri2_create_screen at %s:%d", __FILE__, __LINE__);
+    if (!dri2_create_screen(disp)) {
+       _eglLog(_EGL_WARNING, "DRI2: failed to create screen");
+       droid_unload_driver(disp);
+@@ -1206,6 +1207,7 @@ dri2_initialize_android(_EGLDisplay *disp)
+          goto cleanup;
+       }
+ 
++      _eglLog(_EGL_DEBUG, "Calling dri2_create_screen at %s:%d", __FILE__, __LINE__);
+       if (!dri2_create_screen(disp)) {
+          err = "DRI2: Failed to create swrast screen";
+          goto cleanup;
+diff --git a/src/egl/drivers/dri2/platform_device.c b/src/egl/drivers/dri2/platform_device.c
+index aa36d63a5b2..af66830698f 100644
+--- a/src/egl/drivers/dri2/platform_device.c
++++ b/src/egl/drivers/dri2/platform_device.c
+@@ -359,6 +359,7 @@ dri2_initialize_device(_EGLDisplay *disp)
+       return EGL_FALSE;
+    }
+ 
++   _eglLog(_EGL_DEBUG, "Calling dri2_create_screen at %s:%d", __FILE__, __LINE__);
+    if (!dri2_create_screen(disp)) {
+       err = "DRI2: failed to create screen";
+       goto cleanup;
+diff --git a/src/egl/drivers/dri2/platform_surfaceless.c b/src/egl/drivers/dri2/platform_surfaceless.c
+index 397c64eea6b..c654a880701 100644
+--- a/src/egl/drivers/dri2/platform_surfaceless.c
++++ b/src/egl/drivers/dri2/platform_surfaceless.c
+@@ -276,6 +276,7 @@ surfaceless_probe_device(_EGLDisplay *disp, bool swrast, bool zink)
+ 
+          dri2_dpy->fd_display_gpu = dri2_dpy->fd_render_gpu;
+ 
++         _eglLog(_EGL_DEBUG, "Calling dri2_create_screen at %s:%d", __FILE__, __LINE__);
+          if (!dri2_create_screen(disp)) {
+             _eglLog(_EGL_WARNING, "DRI2: failed to create screen");
+             goto retry;
+@@ -346,6 +347,7 @@ surfaceless_probe_device_sw(_EGLDisplay *disp)
+ 
+    dri2_dpy->fd_display_gpu = dri2_dpy->fd_render_gpu;
+ 
++   _eglLog(_EGL_DEBUG, "Calling dri2_create_screen at %s:%d", __FILE__, __LINE__);
+    if (!dri2_create_screen(disp)) {
+       _eglLog(_EGL_WARNING, "DRI2: failed to create screen");
+       free(dri2_dpy->driver_name);
+diff --git a/src/egl/drivers/dri2/platform_wayland.c b/src/egl/drivers/dri2/platform_wayland.c
+index 42d6bc9a1b6..961b8af817f 100644
+--- a/src/egl/drivers/dri2/platform_wayland.c
++++ b/src/egl/drivers/dri2/platform_wayland.c
+@@ -2318,6 +2318,7 @@ dri2_initialize_wayland_drm(_EGLDisplay *disp)
+       goto cleanup;
+    }
+ 
++   _eglLog(_EGL_DEBUG, "Calling dri2_create_screen at %s:%d", __FILE__, __LINE__);
+    if (!dri2_create_screen(disp))
+       goto cleanup;
+ 
+@@ -3071,10 +3072,11 @@ dri2_initialize_wayland_swrast(_EGLDisplay *disp)
+ 
+    dri2_dpy->loader_extensions = disp->Options.Zink ? kopper_swrast_loader_extensions : swrast_loader_extensions;
+ 
++   _eglLog(_EGL_DEBUG, "Calling dri2_create_screen at %s:%d", __FILE__, __LINE__);
+    if (!dri2_create_screen(disp))
+       goto cleanup;
+ 
+    if (!dri2_setup_device(disp, disp->Options.ForceSoftware)) {
+       _eglError(EGL_NOT_INITIALIZED, "DRI2: failed to setup EGLDevice");
+       goto cleanup;
+    }
+diff --git a/src/egl/drivers/dri2/platform_x11.c b/src/egl/drivers/dri2/platform_x11.c
+index 14335e0b504..2b2e2b4a001 100644
+--- a/src/egl/drivers/dri2/platform_x11.c
++++ b/src/egl/drivers/dri2/platform_x11.c
+@@ -1769,10 +1769,11 @@ platform_x11_finalize(_EGLDisplay *disp)
+    if (!dri2_x11_check_multibuffers(disp))
+       return false;
+ 
++   _eglLog(_EGL_DEBUG, "Calling dri2_create_screen at %s:%d", __FILE__, __LINE__);
+    if (!dri2_create_screen(disp))
+       return false;
+ 
+    if (!dri2_setup_device(disp, disp->Options.ForceSoftware || dri2_dpy->kopper_without_modifiers)) {
+       _eglError(EGL_NOT_INITIALIZED, "DRI2: failed to setup EGLDevice");
+       return false;
+    }
+@@ -1920,6 +1921,7 @@ dri2_initialize_x11_dri2(_EGLDisplay *disp)
+    if (!dri2_x11_check_multibuffers(disp))
+       goto cleanup;
+ 
++   _eglLog(_EGL_DEBUG, "Calling dri2_create_screen at %s:%d", __FILE__, __LINE__);
+    if (!dri2_create_screen(disp))
+       goto cleanup;
+ 
+diff --git a/src/gallium/auxiliary/pipe-loader/pipe_loader.c b/src/gallium/auxiliary/pipe-loader/pipe_loader.c
+index 721204d95a7..c24eb248942 100644
+--- a/src/gallium/auxiliary/pipe-loader/pipe_loader.c
++++ b/src/gallium/auxiliary/pipe-loader/pipe_loader.c
+@@ -171,6 +171,7 @@ pipe_loader_get_driinfo_xml(const char *driver_name)
+ struct pipe_screen *
+ pipe_loader_create_screen_vk(struct pipe_loader_device *dev, bool sw_vk, bool driver_name_is_inferred)
+ {
++   mesa_logi("%s:%d: start", __FILE__, __LINE__);
+    struct pipe_screen_config config;
+ 
+    pipe_loader_load_options(dev);
+@@ -208,6 +209,7 @@ pipe_loader_find_module(const char *driver_name,
+          ret = snprintf(path, sizeof(path), "%s%s%s",
+                         MODULE_PREFIX, driver_name, UTIL_DL_EXT);
+ 
++      mesa_logi("%s:%d: path: %s", __FILE__, __LINE__, path);
+       if (ret > 0 && ret < sizeof(path) && u_file_access(path, 0) != -1) {
+          lib = util_dl_open(path);
+          if (lib) {
+diff --git a/src/gallium/auxiliary/pipe-loader/pipe_loader_drm.c b/src/gallium/auxiliary/pipe-loader/pipe_loader_drm.c
+index d418efb6bc8..5a7c890885b 100644
+--- a/src/gallium/auxiliary/pipe-loader/pipe_loader_drm.c
++++ b/src/gallium/auxiliary/pipe-loader/pipe_loader_drm.c
+@@ -98,6 +98,7 @@ static const struct drm_driver_descriptor *driver_descriptors[] = {
+ static const struct drm_driver_descriptor *
+ get_driver_descriptor(const char *driver_name, struct util_dl_library **plib)
+ {
++   mesa_logi("%s:%d: start", __FILE__, __LINE__);
+ #ifdef GALLIUM_STATIC_TARGETS
+    for (int i = 0; i < ARRAY_SIZE(driver_descriptors); i++) {
+       if (strcmp(driver_descriptors[i]->driver_name, driver_name) == 0)
+@@ -109,6 +110,7 @@ get_driver_descriptor(const char *driver_name, struct util_dl_library **plib)
+    if (search_dir == NULL)
+       search_dir = PIPE_SEARCH_DIR;
+ 
++   mesa_logi("%s:%d: search_dir: %s", __FILE__, __LINE__, search_dir);
+    *plib = pipe_loader_find_module(driver_name, search_dir);
+    if (!*plib)
+       return NULL;
+@@ -141,6 +143,7 @@ get_nctx_caps(int fd, struct virgl_renderer_capset_drm *caps)
+ static bool
+ pipe_loader_drm_probe_fd_nodup(struct pipe_loader_device **dev, int fd, bool zink)
+ {
++   mesa_logi("%s:%d: start", __FILE__, __LINE__);
+    struct pipe_loader_drm_device *ddev = CALLOC_STRUCT(pipe_loader_drm_device);
+    int vendor_id, chip_id;
+ 
+@@ -161,6 +164,7 @@ pipe_loader_drm_probe_fd_nodup(struct pipe_loader_device **dev, int fd, bool zin
+       ddev->base.driver_name = strdup("zink");
+    else
+       ddev->base.driver_name = loader_get_driver_for_fd(fd);
++   mesa_logi("%s:%d: ddev->base.driver_name: %s", __FILE__, __LINE__, ddev->base.driver_name);
+    if (!ddev->base.driver_name)
+       goto fail;
+ 
+@@ -207,6 +211,7 @@ pipe_loader_drm_probe_fd_nodup(struct pipe_loader_device **dev, int fd, bool zin
+    if (!ddev->dd && !zink)
+       ddev->dd = get_driver_descriptor("kmsro", plib);
+ 
++   mesa_logi("%s:%d: ddev->dd: %s", __FILE__, __LINE__, ddev->dd == NULL ? "not set" : "set");
+    if (!ddev->dd)
+       goto fail;
+ 
+diff --git a/src/gallium/frontends/dri/dri2.c b/src/gallium/frontends/dri/dri2.c
+index d7d0b177a7c..df8d19107f9 100644
+--- a/src/gallium/frontends/dri/dri2.c
++++ b/src/gallium/frontends/dri/dri2.c
+@@ -1920,12 +1920,14 @@ dri2_init_drawable(struct dri_drawable *drawable, bool isPixmap, int alphaBits)
+ struct pipe_screen *
+ dri2_init_screen(struct dri_screen *screen, bool driver_name_is_inferred)
+ {
++   mesa_logi("%s:%d: dri2_init_screen", __FILE__, __LINE__);
+    struct pipe_screen *pscreen = NULL;
+ 
+    screen->can_share_buffer = true;
+    screen->auto_fake_front = dri_with_format(screen);
+ 
+ #ifdef HAVE_LIBDRM
++   mesa_logi("%s:%d: HAVE_LIBDRM", __FILE__, __LINE__);
+    if (pipe_loader_drm_probe_fd(&screen->dev, screen->fd, false))
+       pscreen = pipe_loader_create_screen(screen->dev, driver_name_is_inferred);
+ #endif
+diff --git a/src/gallium/frontends/dri/dri_util.c b/src/gallium/frontends/dri/dri_util.c
+index bca41efba16..f85c0db3048 100644
+--- a/src/gallium/frontends/dri/dri_util.c
++++ b/src/gallium/frontends/dri/dri_util.c
+@@ -127,6 +127,7 @@ driCreateNewScreen3(int scrn, int fd,
+    (void) mtx_init(&screen->opencl_func_mutex, mtx_plain);
+ 
+    struct pipe_screen *pscreen = NULL;
++   _eglLog(_EGL_DEBUG, "%s:%d: screen type: %d", __FILE__, __LINE__, type);
+    switch (type) {
+    case DRI_SCREEN_DRI3:
+       pscreen = dri2_init_screen(screen, driver_name_is_inferred);
+

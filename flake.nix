@@ -1,6 +1,5 @@
 {
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-  inputs.nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable-small";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
   inputs.gradle2nix = {
     url = "github:tadfisher/gradle2nix/v2";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -10,7 +9,6 @@
   outputs = {
     self,
     nixpkgs,
-    nixpkgs-unstable,
     gradle2nix,
     fun,
   }: let
@@ -27,33 +25,47 @@
           ];
       };
     };
+    ovl = final: prev: {
+      # mesa = prev.mesa.overrideAttrs (p: { patches = p.patches or [] ++ [./mesa.patch]; });
+      wlroots_0_18 = prev.wlroots_0_18.overrideAttrs (p: { patches = p.patches or [] ++ [./wlroots.patch]; });
+    };
     linkPkgs = buildPkgs.pkgsCross.aarch64-multiplatform-musl.extend (final: prev: {
       musl = prev.musl.overrideAttrs (p: {patches = p.patches or [] ++ ["${sources.pact}/musl/adapt-seccomp.patch"];});
     });
-    vatPkgs = nixpkgs.legacyPackages.aarch64-linux;
+    vatPkgs = nixpkgs.legacyPackages.aarch64-linux.extend ovl;
     refPkgs = self.packages.${sys};
 
     sources = buildPkgs.callPackage ./sources.nix {};
-    jar = nixpkgs-unstable.lib.nixosSystem {
-      system = sys;
+    jar = nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
       modules = [
         ({
           pkgs,
           lib,
+          modulesPath,
           ...
         }: {
-          nixpkgs.crossSystem.system = "aarch64-linux";
+          # nixpkgs.crossSystem.system = "aarch64-linux";
+
+          imports = [(modulesPath + "/profiles/minimal.nix")];
 
           boot.isContainer = true;
+          console.enable = true;
           environment.systemPackages = [
-            pkgs.neofetch
             pkgs.tmux
-            pkgs.glxinfo
+            pkgs.neofetch
+            pkgs.neovim
             pkgs.glmark2
+            pkgs.niri
+            pkgs.vkmark
+            pkgs.kitty
+            pkgs.weston
+            pkgs.alacritty
             refPkgs.dive
-            # refPkgs.canvas
-            refPkgs.gldraw
+            refPkgs.mew
           ];
+          nixpkgs.overlays = [ovl];
+          networking.useDHCP = false;
 
           users.mutableUsers = false;
           users.users.root.password = "1234";
@@ -69,23 +81,38 @@
             group = "system";
           };
           users.groups.system.gid = 1000;
-
-          # services.xserver = {
-          #   enable = true;
-          #   displayManager.xserverBin = lib.mkForce "${agentX}/bin/X";
-          # };
-          # services.displayManager.ly.enable = true;
-          nixpkgs.overlays = [
-            (final: prev: {
-              mesa = prev.mesa.overrideAttrs (p: {
-                mesonFlags =
-                  p.mesonFlags
-                  ++ [(lib.mesonOption "freedreno-kmds" "kgsl,msm")];
-              });
-            })
-          ];
           hardware.graphics.enable = true;
-          # services.xserver.desktopManager.xfce.enable = true;
+          
+          # DNS
+          networking.resolvconf.useLocalResolver = true;
+          services.smartdns = {
+            enable = true;
+            settings = {
+              server = [
+                "1.1.1.1:53"
+                "8.8.8.8:53"
+                "9.9.9.9:53"
+                "149.112.112.112:53"
+
+                "114.114.114.114:53 -group cn"
+                "114.114.115.115:53 -group cn"
+                "119.29.29.29:53 -group cn"
+                "223.5.5.5:53 -group cn"
+                "223.6.6.6:53 -group cn"
+              ];
+              server-tls = ["1.1.1.1:853" "8.8.8.8:853" "9.9.9.9:853" "149.112.112.112:853"];
+              server-https = [
+                "https://cloudflare-dns.com/dns-query -group doh"
+                "https://dns.quad9.net/dns-query -group doh"
+              ];
+              nameserver = "/.onion/doh";
+              bind = "127.0.0.1:53";
+              prefetch-domain = true;
+              speed-check-mode = "tcp:443,tcp:80,ping";
+              audit-enable = true;
+              dualstack-ip-selection = true;
+            };
+          };
         })
       ];
     };
@@ -105,10 +132,8 @@
       surge = linkPkgs.callPackage ./link/surge.nix {inherit (refPkgs) cortex sheath;};
       grid = linkPkgs.callPackage ./shard/grid/default.nix {};
 
-      inherit (vatPkgs.callPackage ./vat/android-headers {}) android-headers-30;
-      libhybris = vatPkgs.callPackage ./vat/libhybris {android-headers = refPkgs.android-headers-30;};
       dive = vatPkgs.callPackage ./vat/dive {};
-      gldraw = vatPkgs.callPackage ./vat/gldraw {};
+      mew = vatPkgs.callPackage ./vat/mew {};
       phantom = vatPkgs.callPackage ./vat/phantom.nix {inherit jar;};
     };
 
