@@ -11,8 +11,8 @@ stdenv.mkDerivation {
   src = fetchFromGitHub {
     owner = "parasyteOS";
     repo = "cortex";
-    rev = "2deab607940d8d51d90f9d3fea853d85facc9d8d";
-    hash = "sha256-TKxit3VmgbzwoNE8q+6NBo7fUICfawIh/zKBURMIFKs=";
+    rev = "b88b215cc9e811d505319ddd36af858e2b1ea3fc";
+    hash = "sha256-j+ciE+UcWZHjc8I2Y1wsZirKcNbGYqHpIHpwbdlMDJU=";
   };
 
   nativeBuildInputs = [pkg-config];

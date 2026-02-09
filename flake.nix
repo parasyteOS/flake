@@ -29,9 +29,7 @@
       # mesa = prev.mesa.overrideAttrs (p: { patches = p.patches or [] ++ [./mesa.patch]; });
       wlroots_0_18 = prev.wlroots_0_18.overrideAttrs (p: { patches = p.patches or [] ++ [./wlroots.patch]; });
     };
-    linkPkgs = buildPkgs.pkgsCross.aarch64-multiplatform-musl.extend (final: prev: {
-      musl = prev.musl.overrideAttrs (p: {patches = p.patches or [] ++ ["${sources.pact}/musl/adapt-seccomp.patch"];});
-    });
+    linkPkgs = buildPkgs.pkgsCross.aarch64-multiplatform;
     vatPkgs = nixpkgs.legacyPackages.aarch64-linux.extend ovl;
     refPkgs = self.packages.${sys};
 
@@ -127,6 +125,7 @@
       cortex = linkPkgs.callPackage ./link/cortex {};
       weave = linkPkgs.callPackage ./link/weave {};
       sheath = linkPkgs.callPackage ./link/sheath {};
+      qemu = linkPkgs.callPackage ./link/qemu {};
 
       dial = linkPkgs.callPackage ./link/dial.nix {inherit (refPkgs) cortex weave;};
       surge = linkPkgs.callPackage ./link/surge.nix {inherit (refPkgs) cortex sheath;};
