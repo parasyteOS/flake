@@ -1,5 +1,5 @@
 {
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
   inputs.gradle2nix = {
     url = "github:tadfisher/gradle2nix/v2";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -29,7 +29,7 @@
       # mesa = prev.mesa.overrideAttrs (p: { patches = p.patches or [] ++ [./mesa.patch]; });
       wlroots_0_18 = prev.wlroots_0_18.overrideAttrs (p: { patches = p.patches or [] ++ [./wlroots.patch]; });
     };
-    linkPkgs = buildPkgs.pkgsCross.aarch64-multiplatform;
+    linkPkgs = buildPkgs.pkgsCross.aarch64-multiplatform-musl;
     vatPkgs = nixpkgs.legacyPackages.aarch64-linux.extend ovl;
     refPkgs = self.packages.${sys};
 
@@ -125,7 +125,7 @@
       cortex = linkPkgs.callPackage ./link/cortex {};
       weave = linkPkgs.callPackage ./link/weave {};
       sheath = linkPkgs.callPackage ./link/sheath {};
-      qemu = linkPkgs.callPackage ./link/qemu {};
+      qemu = buildPkgs.pkgsCross.aarch64-multiplatform.callPackage ./link/qemu {};
 
       dial = linkPkgs.callPackage ./link/dial.nix {inherit (refPkgs) cortex weave;};
       surge = linkPkgs.callPackage ./link/surge.nix {inherit (refPkgs) cortex sheath;};
