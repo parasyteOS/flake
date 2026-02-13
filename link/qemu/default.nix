@@ -30,8 +30,8 @@ in
         owner = "parasyteOS";
         repo = "qemu";
         private = true;
-        rev = "e39774f2db43677d53489343ad46ef537bbce5d2";
-        hash = "sha256-ewhZlhL2qv3Rr4XcfoXXVA+Gg1jZK8qk27caNeVyjzg=";
+        rev = "65f5493b5b968ffdb20eecd79a854101c271a8ef";
+        hash = "sha256-7NF31+X7kpU57OPadkne9HdN6j/bOJ247oVknrlJHXM=";
       };
       prePatch = p.prePatch or "" + ''
         cp --no-preserve=all -R ${dtc} subprojects/dtc
